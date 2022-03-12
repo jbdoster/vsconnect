@@ -8,16 +8,7 @@ import { listDevicesService as DomainListDevicesService } from "../core/services
 import { DeviceEntity } from "./repositories/use-cases/list-devices/listDevices.entities";
 import { listDevicesRepository } from "./repositories/use-cases/list-devices/listDevices.repository";
 
-/**
- * 1. UI routine
- *  a. Map Output
- * 2. Application Sequence
- *  a. Map output
- * 3. Domain Sequence
- *  a. Map Output
- * 4.
- */
-export const listDevicesRoutine = F.pipe(
+export const listDevicesCoreRoutine = F.pipe(
   ApplicationListDevicesService({
     repositories: {
       listDevicesRepository,
@@ -32,23 +23,20 @@ export const listDevicesRoutine = F.pipe(
             devices,
           },
         }),
-        // TODO update return type according to UI flow return type
         E.match<
           Error,
           { devices: DeviceEntity[] },
           E.Either<Error, { devices: DeviceEntity[] }>
         >(
           (error: Error) => E.left(error),
-          // TODO update this to UI flow
-          // next step is to get device selection from user
-          // ask them to choose a key to use to trigger the VS Code commands
           (entities: { devices: DeviceEntity[] }) => {
-            console.log("entities", entities);
             return E.right(entities);
           }
         )
       )
   )
 );
+// const displayDevices = (devices: DeviceEntity[]) =>
+// export const displayDevicesUIRoutine = (devices: DeviceEntity[]) => F.pipe();
 export const assignDeviceKeyAndVsCodeCommandInteractor = () =>
-  F.pipe(listDevicesRoutine);
+  F.pipe(listDevicesCoreRoutine);
