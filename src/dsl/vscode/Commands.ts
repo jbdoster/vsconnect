@@ -1,0 +1,4 @@
+export enum Commands {
+  CONNECT = 'extension.CONNECT',
+  REMOVE_CONNECTED_VSCODE_COMMAND = 'extension.REMOVE_CONNECTED_VSCODE_COMMAND',
+}

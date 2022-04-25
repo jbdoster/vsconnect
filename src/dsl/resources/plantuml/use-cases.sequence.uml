@@ -1,0 +1,158 @@
+@startuml
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+
+box "External"
+participant "User"
+end box
+
+box "Frontend"
+participant View
+participant Presenter
+end box
+
+box "Backend (CORE)"
+participant "Application Service"
+participant "Domain Service"
+participant "Domain Model"
+endBox
+
+box "Infrastructure"
+participant Repository
+end box
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+== Use Case: Activate Application ==
+
+User -> View : activate-application
+
+View -> Presenter : activate-application
+
+Presenter -> "Application Service" : activate-application
+
+"Application Service" ->  Repository : request-usb-devices-list
+"Application Service" <-- Repository : entities-usb-devices-list
+
+loop for n usb-device-inbound-endpoints
+"Application Service" ->  Repository : request-usb-device-information
+"Application Service" <-- Repository : entity-usb-device-information
+"Application Service" -> "Application Service" : set-usb-device-key-press-listener
+end
+
+"Application Service" ->  Repository : update-usb-device-broker-repository
+
+"Application Service" ->  "Application Service" : set-usb-device-key-press-listener
+
+"Application Service" ->  Repository : request-usb-device-broker-instance
+"Application Service" <-- Repository : entity-usb-device-broker-instance
+
+"Application Service" -> "Domain Service" : data-transfer-object
+
+"Domain Service" ->  "Domain Model" : validate-value-object
+"Domain Service" <-- "Domain Model" : resolve-reject
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+== Use Case: Select Usb Key Trigger ==
+
+User -> View : select-usb-key-trigger
+
+View -> Presenter : select-usb-key-trigger
+
+Presenter -> "Application Service" : select-usb-key-trigger
+
+"Application Service" ->  Repository : request-usb-device-broker-instance
+"Application Service" <-- Repository : entity-usb-device-broker-instance
+
+"Application Service" -> "Application Service" : listen-usb-device-broker-instance-on-key-press
+
+"Application Service" -> "Domain Service" : handle-usb-device-broker-instance-key-press
+
+"Domain Service" ->  "Domain Model" : value-object-usb-device-broker-instance-information
+"Domain Service" <-- "Domain Model" : resolve-reject
+
+"Application Service" <-- "Domain Service" : data-transfer-object-usb-device-key
+
+"Application Service" -> Repository : update-vscode-command-by-usb-device-key
+"Application Service" <-- Repository : resolve-reject
+
+"Application Service" -> Repository : request-vscode-commands-list
+"Application Service" <-- Repository : entities-vscode-commands-list
+
+Presenter <-- "Application Service" : data-transfer-object-vscode-commands-list
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+== Use Case:  Select VS Code Command ==
+
+User -> View : vscode-command
+
+View -> Presenter : vscode-command
+
+Presenter -> "Application Service" : store-chosen-vscode-command
+
+"Application Service" -> "Domain Service" : handle-chosen-vscode-command
+
+"Domain Service" ->  "Domain Model" : value-object-chosen-vscode-command
+"Domain Service" <-- "Domain Model" : resolve-reject
+
+"Application Service" <-- "Domain Service" : resolve-reject
+
+"Application Service" ->  "Repository" : update-vscode-command-by-usb-device-key
+"Application Service" <-- "Repository" : resolve-reject
+
+Presenter <-- "Application Service" : data-transfer-object
+
+View <-- Presenter : view-model
+
+User <-- View : display
+
+@enduml

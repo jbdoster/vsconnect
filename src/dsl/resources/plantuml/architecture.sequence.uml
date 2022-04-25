@@ -1,0 +1,54 @@
+@startuml
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+
+box "External"
+participant "System"
+participant "User"
+end box
+
+box "Frontend"
+participant View
+participant Presenter
+end box
+
+box "Backend (CORE)"
+participant "Application Service"
+participant "Domain Service"
+participant "Domain Model"
+endBox
+
+box "Infrastructure"
+participant Repository
+end box
+
+System -> View : input
+User   -> View : input
+
+View -> Presenter : user-input-event
+
+Presenter -> "Application Service" : aggregate
+
+"Application Service" ->   Repository : requests
+"Application Service" <--  Repository : entities
+
+"Application Service" ->  "Domain Service" : entities
+
+"Domain Service"      ->  "Domain Model" : value-objects
+
+"Domain Model"        ->  "Domain Model" : validate-value-objects
+
+"Domain Service"      <-- "Domain Model" : resolve-reject
+
+"Application Service" <-- "Domain Service" : data-transfer-object
+
+"Application Service" ->  Repository : updates
+"Application Service" <-- Repository : resolve-reject
+
+"Presenter" <-- "Application Service" : data-transfer-object
+
+"View" <-- Presenter : display-view-model
+
+"User" <-- View : display
+
+@enduml
