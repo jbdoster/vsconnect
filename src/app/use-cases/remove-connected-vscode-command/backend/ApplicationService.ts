@@ -1,14 +1,14 @@
 import { ApplicationService } from '../../../../dsl/architecture/onion/core/ApplicationService';
 
 import { VsCodeCommandByUsbDeviceKeyRepositoryInterface } from '../../../infrastructure/repositories/VsCodeCommandByUsbDeviceKeyRepository';
-import { UsbDevicesListEntities } from '../../../infrastructure/repositories/UsbDevicesListRepository';
+import { Entity as UsbDevicesListEntity } from '../../../infrastructure/repositories/UsbDevicesListRepository';
 import { RemoveConnectedVsCodeCommandDomainService } from './DomainService';
 
 type Event = {
   selectedVsCodeCommand: string;
 };
 
-type Entities = UsbDevicesListEntities;
+type Entities = UsbDevicesListEntity;
 
 export type DTO = void;
 

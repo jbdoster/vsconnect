@@ -1,7 +1,7 @@
 import { once } from 'events';
 import { DomainService } from '../../../../dsl/architecture/onion/core/DomainService';
 import {
-  UsbDeviceBrokerEntity,
+  Entity as UsbDeviceBrokerEntity,
   UsbDeviceKeyPressEventData,
 } from '../../../infrastructure/repositories/UsbDeviceEndpointBrokerRepository';
 

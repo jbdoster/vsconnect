@@ -1,26 +1,24 @@
 import { Device, getDeviceList } from 'usb/dist/usb';
 
-import { Entity } from '../../../dsl/architecture/onion/infrastructure/Repository';
+import { Entity as E } from '../../../dsl/architecture/onion/infrastructure/Repository';
 import { Repository } from '../../../dsl/architecture/onion/infrastructure/Repository';
 
 type Dependencies = never;
 
-export type UsbDevicesListEntities = Entity<Device>[];
+export type Entity = E<Device>[];
 
-export type Request = never;
+export type Request = Record<string, never>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface UsbDevicesListRepositoryInterface
-  extends Repository<Dependencies, Request, UsbDevicesListEntities> {}
+  extends Repository<Dependencies, Request, Entity> {}
 
 export class UsbDevicesListRepository
-  extends Repository<Dependencies, Request, UsbDevicesListEntities>
+  extends Repository<Dependencies, Request, Entity>
   implements UsbDevicesListRepositoryInterface
 {
   read = () => {
-    const devices = getDeviceList() as UsbDevicesListEntities;
+    const devices = getDeviceList() as Entity;
     return Promise.resolve(devices);
   };
-  update = () =>
-    Promise.reject('UsbDevicesListRepository::update has no implementation.');
 }

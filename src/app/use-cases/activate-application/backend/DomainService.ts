@@ -1,6 +1,6 @@
 import { DomainService } from '../../../../dsl/architecture/onion/core/DomainService';
 import { ValueObject } from '../../../../dsl/architecture/onion/core/ValueObject';
-import { UsbDeviceBrokerEntity } from '../../../infrastructure/repositories/UsbDeviceEndpointBrokerRepository';
+import { Entity as UsbDeviceBrokerEntity } from '../../../infrastructure/repositories/UsbDeviceEndpointBrokerRepository';
 import { VsCodeCommandsListEntities } from '../../../infrastructure/repositories/VsCodeCommandsList';
 export type Context = {
   usbDeviceBroker: UsbDeviceBrokerEntity;

@@ -10,12 +10,12 @@ import { ActivateApplicationDomainService } from './DomainService';
 import { UsbDeviceInformationRepositoryInterface } from '../../../infrastructure/repositories/UsbDeviceInformationRepository';
 import { VsCodeCommandByUsbDeviceKeyRepositoryInterface } from '../../../infrastructure/repositories/VsCodeCommandByUsbDeviceKeyRepository';
 import {
-  UsbDevicesListEntities,
+  Entity as UsbDevicesListEntity,
   UsbDevicesListRepositoryInterface,
 } from '../../../infrastructure/repositories/UsbDevicesListRepository';
 import {
-  UsbDeviceBrokerEntity,
-  UsbDeviceBrokerRepositoryInterface,
+  Entity as UsbDeviceBrokerEntity,
+  Interface as UsbDeviceBrokerRepositoryInterface,
 } from '../../../infrastructure/repositories/UsbDeviceEndpointBrokerRepository';
 import { VsCodeCommandsListEntities } from '../../../infrastructure/repositories/VsCodeCommandsList';
 
@@ -23,7 +23,7 @@ type Event = {
   extensionContext: vscode.ExtensionContext;
 };
 
-type Entities = UsbDevicesListEntities;
+type Entities = UsbDevicesListEntity;
 
 export type DTO = void;
 

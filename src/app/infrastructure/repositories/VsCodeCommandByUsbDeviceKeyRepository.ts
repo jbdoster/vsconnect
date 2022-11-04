@@ -1,6 +1,6 @@
 import { ExtensionContext, window } from 'vscode';
 import {
-  Entity,
+  Entity as E,
   Repository,
 } from '../../../dsl/architecture/onion/infrastructure/Repository';
 import { UsbDeviceInformationEntity } from './UsbDeviceInformationRepository';
@@ -9,7 +9,7 @@ type Dependencies = {
   context: ExtensionContext;
 };
 
-export type VsCodeCommandByUsbDeviceKeyEntity = Entity<{
+export type Entity = E<{
   usbDeviceKeyPressed: Buffer;
   vscodeCommand: string;
   information: UsbDeviceInformationEntity;
@@ -29,14 +29,15 @@ export type Request =
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface VsCodeCommandByUsbDeviceKeyRepositoryInterface
-  extends Repository<Dependencies, Request, VsCodeCommandByUsbDeviceKeyEntity> {
-  readAll: () => Promise<VsCodeCommandByUsbDeviceKeyEntity[]>;
+  extends Repository<Dependencies, Request, Entity> {
+  readAll: () => Promise<Entity[]>;
   removeAll: () => Promise<void>;
   remove: (request: Request) => Promise<void>;
+  update(entity: Entity): Promise<void>;
 }
 
 export class VsCodeCommandByUsbDeviceKeyRepository
-  extends Repository<Dependencies, Request, VsCodeCommandByUsbDeviceKeyEntity>
+  extends Repository<Dependencies, Request, Entity>
   implements VsCodeCommandByUsbDeviceKeyRepositoryInterface
 {
   protected dependencies: Dependencies;
@@ -49,18 +50,13 @@ export class VsCodeCommandByUsbDeviceKeyRepository
       request.usbDeviceInformation,
       request.usbDeviceKey,
     );
-    const entity = this.dependencies.context.globalState.get(
-      key,
-    ) as VsCodeCommandByUsbDeviceKeyEntity;
+    const entity = this.dependencies.context.globalState.get(key) as Entity;
     return Promise.resolve(entity);
   };
-  readAll = (): Promise<VsCodeCommandByUsbDeviceKeyEntity[]> => {
+  readAll = (): Promise<Entity[]> => {
     const keys = this.dependencies.context.globalState.keys();
     const allConnections = keys.map(
-      (key) =>
-        this.dependencies.context.globalState.get(
-          key,
-        ) as VsCodeCommandByUsbDeviceKeyEntity,
+      (key) => this.dependencies.context.globalState.get(key) as Entity,
     );
     return Promise.resolve(allConnections);
   };
@@ -72,11 +68,11 @@ export class VsCodeCommandByUsbDeviceKeyRepository
     return Promise.resolve();
   };
   remove = async (request: Request) => {
-    this.removeAll();
     const allPreviousEntries = await this.readAll();
     const nonMatchingEntries = allPreviousEntries.filter(
       (command) => command.vscodeCommand !== request.selectedVsCodeCommand,
     );
+    this.removeAll();
     nonMatchingEntries.forEach((entry) => {
       // TODO
       // Store key as part of entity
@@ -88,7 +84,7 @@ export class VsCodeCommandByUsbDeviceKeyRepository
       this.dependencies.context.globalState.update(key, entry);
     });
   };
-  update = (entity: VsCodeCommandByUsbDeviceKeyEntity) => {
+  update = (entity: Entity) => {
     // TODO
     // Update entity contract and store index
     const key = this.generateIndex(

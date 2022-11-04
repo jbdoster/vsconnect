@@ -1,15 +1,15 @@
 import { ApplicationService } from '../../../../dsl/architecture/onion/core/ApplicationService';
 
 import {
-  VsCodeCommandByUsbDeviceKeyEntity,
+  Entity as VsCodeCommandByUsbDeviceKeyEntity,
   VsCodeCommandByUsbDeviceKeyRepositoryInterface,
 } from '../../../infrastructure/repositories/VsCodeCommandByUsbDeviceKeyRepository';
-import { UsbDevicesListEntities } from '../../../infrastructure/repositories/UsbDevicesListRepository';
+import { Entity as UsbDevicesListEntity } from '../../../infrastructure/repositories/UsbDevicesListRepository';
 import { SelectConnectedUsbKeyDomainService } from './DomainService';
 
 type Event = never;
 
-type Entities = UsbDevicesListEntities;
+type Entities = UsbDevicesListEntity;
 
 export type DTO = {
   connectedUsbKeys: VsCodeCommandByUsbDeviceKeyEntity[];

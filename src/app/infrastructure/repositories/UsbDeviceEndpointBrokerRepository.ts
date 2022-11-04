@@ -2,24 +2,17 @@ import { EventEmitter } from 'events';
 import { InEndpoint } from 'usb/dist/usb/endpoint';
 
 import {
-  Entity,
+  Entity as E,
   Repository,
 } from '../../../dsl/architecture/onion/infrastructure/Repository';
 import { UsbDeviceInformationEntity } from './UsbDeviceInformationRepository';
-
-type Dependencies = never;
 
 export type UsbDeviceKeyPressEventData = {
   usbDeviceKeyPressed: Buffer;
   usbDeviceInformation: UsbDeviceInformationEntity;
 };
 
-export interface UsbDeviceBroker extends EventEmitter {
-  emit(event: 'data', data: UsbDeviceKeyPressEventData): boolean;
-  on(event: 'data', listener: (data: UsbDeviceKeyPressEventData) => void): this;
-}
-
-export type UsbDeviceBrokerEntity = Entity<
+export type Entity = E<
   {
     broker: UsbDeviceBroker;
   } & {
@@ -30,28 +23,34 @@ export type UsbDeviceBrokerEntity = Entity<
   }
 >;
 
-type Request = never;
+export interface UsbDeviceBroker extends EventEmitter {
+  emit(event: 'data', data: UsbDeviceKeyPressEventData): boolean;
+  on(event: 'data', listener: (data: UsbDeviceKeyPressEventData) => void): this;
+}
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface UsbDeviceBrokerRepositoryInterface
-  extends Repository<Dependencies, Request, UsbDeviceBrokerEntity> {}
+type Dependencies = Record<string, never>;
+type Request = Record<string, never>;
+
+export interface Interface extends Repository<Dependencies, Request, Entity> {
+  update(entity: Entity): Promise<void>;
+}
 
 export class UsbDeviceEndpointBrokerRepository
-  extends Repository<Dependencies, Request, UsbDeviceBrokerEntity>
-  implements UsbDeviceBrokerRepositoryInterface
+  extends Repository<Dependencies, Request, Entity>
+  implements Interface
 {
-  private entity: UsbDeviceBrokerEntity;
+  private entity: Entity;
   constructor() {
-    super(null as never);
+    super({});
     this.entity = {
       broker: new EventEmitter(),
       usbDevices: [],
-    } as UsbDeviceBrokerEntity;
+    } as Entity;
   }
   read = (request: Request) => {
-    return Promise.resolve(this.entity as UsbDeviceBrokerEntity);
+    return Promise.resolve(this.entity as Entity);
   };
-  update = (entity: UsbDeviceBrokerEntity) => {
+  update = (entity: Entity) => {
     entity.usbDevices.forEach((usbDevice) => {
       usbDevice.endpoint.startPoll(1, 4);
       usbDevice.endpoint.on('data', (usbDeviceKeyPressed: Buffer) => {

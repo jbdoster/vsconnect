@@ -9,10 +9,10 @@ import { SelectUsbKeyTriggerDomainService } from './DomainService';
 import { UsbDeviceInformationRepositoryInterface } from '../../../infrastructure/repositories/UsbDeviceInformationRepository';
 import { VsCodeCommandByUsbDeviceKeyRepositoryInterface } from '../../../infrastructure/repositories/VsCodeCommandByUsbDeviceKeyRepository';
 import {
-  UsbDevicesListEntities,
+  Entity as UsbDevicesListEntity,
   UsbDevicesListRepositoryInterface,
 } from '../../../infrastructure/repositories/UsbDevicesListRepository';
-import { UsbDeviceBrokerRepositoryInterface } from '../../../infrastructure/repositories/UsbDeviceEndpointBrokerRepository';
+import { Interface as UsbDeviceBrokerRepositoryInterface } from '../../../infrastructure/repositories/UsbDeviceEndpointBrokerRepository';
 import {
   VsCodeCommandsListEntities,
   VsCodeCommandsListRepositoryInterface,
@@ -20,7 +20,7 @@ import {
 
 type Event = never;
 
-type Entities = UsbDevicesListEntities;
+type Entities = UsbDevicesListEntity;
 
 export type DTO = {
   usbDeviceKeyPressDataEventList: UsbDeviceKeyPressEventData[];

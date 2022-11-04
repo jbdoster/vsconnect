@@ -1,12 +1,22 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es2020",
-		"lib": ["es2020", "DOM"],
-		"outDir": "out",
-		"sourceMap": true,
-		"rootDir": "src",
-		"strict": true
-	},
-	"exclude": ["node_modules", ".vscode-test"]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2020",
+    "lib": ["es2020", "DOM"],
+    "outDir": "out",
+    "sourceMap": true,
+    "rootDir": "src",
+    "strict": true,
+    "paths": {
+      "@App/*": ["./src/app/*"],
+      "@Dsl/*": ["./src/dsl/*"]
+    },
+    "typeRoots": ["./node_modules/@types/", "./src/@types/"],
+    "types": ["jest", "node", "@types/jest"]
+  },
+  "exclude": ["node_modules", ".vscode-test"],
+  "include": ["./src/app/**/*.ts"]
+  // "typeAcquisition": {
+  //   "include": ["jest"]
+  // }
 }

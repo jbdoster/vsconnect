@@ -3,11 +3,11 @@ import { ApplicationService } from '../../../../dsl/architecture/onion/core/Appl
 import { UsbDeviceInformationRepositoryInterface } from '../../../infrastructure/repositories/UsbDeviceInformationRepository';
 import { VsCodeCommandByUsbDeviceKeyRepositoryInterface } from '../../../infrastructure/repositories/VsCodeCommandByUsbDeviceKeyRepository';
 import {
-  UsbDevicesListEntities,
+  Entity as UsbDevicesListEntity,
   UsbDevicesListRepositoryInterface,
 } from '../../../infrastructure/repositories/UsbDevicesListRepository';
 import {
-  UsbDeviceBrokerRepositoryInterface,
+  Interface as UsbDeviceBrokerRepositoryInterface,
   UsbDeviceKeyPressEventData,
 } from '../../../infrastructure/repositories/UsbDeviceEndpointBrokerRepository';
 import {
@@ -25,7 +25,7 @@ type Event = {
   vscodeCommand: string;
 };
 
-type Entities = UsbDevicesListEntities;
+type Entities = UsbDevicesListEntity;
 
 export type DTO = {
   vscodeCommand: string;
