@@ -2,7 +2,7 @@
   "name": "vsconnect",
   "displayName": "vsconnect",
   "description": "Connect your VS Code commands to your USB device today!",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0",
   "publisher": "ASTROLABZ",
   "private": true,
   "license": "MIT",
@@ -39,8 +39,13 @@
     "vscode:prepublish": "npm run compile",
     "watch": "tsc -watch -p ./",
     "unit:test": "jest --config ./src/jest.config.js --coverage --verbose",
+    "login": "vsce login $VSCODE_MARKETPLACE_ACCESS_KEY",
     "package": "vsce package",
-    "publish": "vsce publish"
+    "publish": "vsce publish",
+    "vsce": "vsce",
+    "extension-package-test": "echo package-test",
+    "extension-publish-test": "echo publish-test",
+    "extension-login-test": "echo login-test"
   },
   "devDependencies": {
     "@babel/preset-typescript": "^7.18.6",

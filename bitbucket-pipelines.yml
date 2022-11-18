@@ -1,0 +1,33 @@
+image: node:16
+
+pipelines:
+  default:
+      - step:
+          name: Build and Test
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run compile
+            - npm run unit:test
+            - npm run circular-dependency-test
+      - step:
+          name: Lint
+          script:
+            - npx eslint .
+          caches:
+            - node
+      # - step:
+      #     name: Package and Deploy Release
+      #     script:
+      #       - set timeout -1 # Wait for finish forever
+      #       - npm run extension-login-test
+      #       - expect "Personal Access Token for publisher"
+      #       - send $VSCODE_MARKETPLACE_ACCESS_KEY
+      #       - expect eof # Wait for finish
+      #       - foreach {pid spawnid os_error_flag exit_code} [wait] break # Return relevant exit code
+      #       - exit "$exit_code"
+      #       - npm run extension-package-test
+      #       - npm run extension-publish-test
+      #     caches:
+      #       - node
